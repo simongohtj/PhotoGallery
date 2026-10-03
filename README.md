@@ -4,6 +4,18 @@ A clean, minimalist photo gallery and digital photo frame application built with
 
 ---
 
+## 📱 Application Preview
+
+### Standard PC LCD (16:9 Landscape)
+![Desktop Slideshow](public/screenshots/desktop-slideshow.png)
+
+### Mobile Device (Phone Portrait)
+<p align="center">
+  <img src="public/screenshots/mobile-portrait-slideshow.png" alt="Mobile Portrait Slideshow" width="380" />
+</p>
+
+---
+
 ## ✨ Features
 
 - **Cinematic Ken Burns Slideshow**:
