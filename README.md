@@ -34,14 +34,17 @@ A clean, minimalist photo gallery and digital photo frame application built with
     - `F`: Toggle full screen (ideal for digital picture frame mode)
   - **Fullscreen Button & Settings Gear**: Located discreetly in the top-right corner.
 
-- **Heartwarming Stylized Milestone Overlay**:
-  - **Wedding Countdown**: Displays your `Wedding` label and upcoming milestone, omitting zero units (e.g. `💍 4th anniversary in 2 months` or `4th anniversary in 12 days`).
-  - **Family Age Display**: Displays your `Family` label with daughter's exact age (e.g. `👶 Our little one has been with us for 5 months, 20 days`).
-  - Backed by subtle gradient scrims and frosted glass cards for perfect legibility over bright or dark photos.
+- **Customizable Milestone Overlay**:
+  - **Dynamic Milestone Tracking**: Supports 3 flexible milestone types:
+    - **Anniversary**: Celebrates annual anniversaries (e.g. `💍 5th anniversary in 8 months, 15 days`).
+    - **Countdown**: Tracks time remaining until future events (e.g. `✈️ Summer trip in 10 months, 12 days ahead!`).
+    - **Age**: Calculates elapsed time since an event or birthday with custom prefix/postfix phrases (e.g. `🎂 2 years, 3 months old`).
+  - **Auto-Rotation**: Cycles through configured milestones automatically.
+  - Backed by subtle gradient scrims and frosted glass cards for legibility over any photo.
 
 - **Admin Management Dashboard (`/admin`)**:
-  - **Milestone Date Pickers**: Set your wedding anniversary and daughter's birth date with an instant live preview.
-  - **Customizable Labels**: Personalize your wedding and family labels.
+  - **Customizable Milestone Manager**: Add, edit, reorder, or toggle any milestone with custom emojis, titles, dates, types, and phrases with instant live preview.
+  - **Slideshow & Effect Controls**: Customize slide duration, Ken Burns effects, and background music playback.
   - **Drag-and-Drop Photo Upload**: Supports multiple image uploads (JPG, PNG, WEBP, GIF, AVIF) with real-time upload progress.
   - **Gallery Management & Multi-Select**: View all uploaded photos with position badges (`#1`, `#2`, ...), drag-and-drop cards to reorder slides, select multiple photos (or "Select All") to batch delete photos in one click, and preview full size in a modal lightbox.
 
@@ -51,7 +54,7 @@ A clean, minimalist photo gallery and digital photo frame application built with
 
 ### 1. Launch the Server
 
-You can launch the app by double-clicking [`start.bat`](file:///d:/Work/PhotoGallery/start.bat) or running:
+You can launch the app by double-clicking `start.bat` or running:
 
 ```bash
 npm start
