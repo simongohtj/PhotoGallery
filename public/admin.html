@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="brand">
+        <div class="brand-icon">🖼️</div>
+        <div class="brand-text">
+          <h1>Admin</h1>
+          <p>Manage milestones, photo effects, background music, and gallery collection</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="/" class="btn-secondary" title="Return to Slideshow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>View Slideshow</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="dashboard-grid">
+      <!-- Section 1: Milestones Tracker -->
+      <section class="card" id="milestonesSection">
+        <div class="card-title-group">
+          <div>
+            <h2>
+              <span>📅</span> Milestones Tracker
+            </h2>
+            <p class="card-subtitle">Add and customize milestones to display on the slideshow (anniversaries, birthdays, life events)</p>
+          </div>
+          <div class="card-header-btns">
+            <button type="button" class="btn-secondary" id="addMilestoneBtn">➕ Add Milestone</button>
+            <button type="button" class="btn-primary" id="saveMilestonesBtn">Save Milestones</button>
+          </div>
+        </div>
+
+        <!-- Milestones Dynamic List -->
+        <div class="milestones-list" id="milestonesList">
+          <!-- Populated dynamically by admin.js -->
+        </div>
+
+        <!-- Real-Time Live Preview -->
+        <div class="preview-box">
+          <div class="preview-box-header">
+            <span class="preview-badge">Live Slideshow Milestone Preview</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Shows how milestones will look on screen</span>
+          </div>
+          <div class="preview-card-display" id="milestonesLivePreview">
+            <!-- Dynamically rendered preview items -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Slideshow & Music Settings -->
+      <section class="card" id="settingsSection">
+        <div class="card-title-group">
+          <div>
+            <h2>
+              <span>⚙️</span> Slideshow &amp; Music Settings
+            </h2>
+            <p class="card-subtitle">Configure photo duration, motion animation, and background music</p>
+          </div>
+          <button type="button" class="btn-primary" id="saveSettingsBtn">Save Settings</button>
+        </div>
+
+        <form id="settingsForm" onsubmit="return false;">
+          <div class="form-grid">
+            <!-- Slide Duration -->
+            <div class="form-group">
+              <label for="slideDuration">Slide Duration (seconds)</label>
+              <div class="slider-container">
+                <input type="range" id="slideDuration" min="3" max="30" step="1" value="6">
+                <span class="slider-value" id="slideDurationVal">6s</span>
+              </div>
+              <span class="hint">How long each photo stays on screen</span>
+            </div>
+
+            <!-- Ken Burns Effect Toggle -->
+            <div class="form-group">
+              <label>Animation Effect</label>
+              <div class="switch-group">
+                <div class="switch-label">
+                  <span>Ken Burns Effect</span>
+                  <span>Gentle pan and zoom motion</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="kenBurnsEffect" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Background Music Enable Toggle -->
+            <div class="form-group">
+              <label>Background Music</label>
+              <div class="switch-group">
+                <div class="switch-label">
+                  <span>Enable Background Music</span>
+                  <span>Play ambient music during slideshow with discreet mute control</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="musicEnabled">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Music Volume Slider -->
+            <div class="form-group">
+              <label for="musicVolume">Music Volume</label>
+              <div class="slider-container">
+                <input type="range" id="musicVolume" min="0" max="100" step="5" value="70">
+                <span class="slider-value" id="musicVolumeVal">70%</span>
+              </div>
+              <span class="hint">Default playback volume level</span>
+            </div>
+
+            <!-- Audio File Upload -->
+            <div class="form-group span-full">
+              <label>Audio Track File</label>
+              <div class="audio-upload-row">
+                <input type="file" id="musicFileInput" accept="audio/*" style="display: none;">
+                <button type="button" class="btn-secondary" id="chooseAudioBtn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18V5l12-2v13"></path>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <circle cx="18" cy="16" r="3"></circle>
+                  </svg>
+                  <span>Upload Audio File</span>
+                </button>
+                <div class="current-audio-badge" id="currentAudioBadge" style="display: none;">
+                  <span class="audio-badge-name" id="audioBadgeName">No file selected</span>
+                  <button type="button" class="btn-icon-small delete" id="removeAudioBtn" title="Remove music track">&times;</button>
+                </div>
+              </div>
+              <span class="hint">Upload MP3, M4A, WAV, AAC, or OGG track</span>
+            </div>
+
+            <!-- Custom Audio URL -->
+            <div class="form-group span-full">
+              <label for="musicUrlInput">Or Stream Audio URL</label>
+              <input type="url" id="musicUrlInput" class="form-input" placeholder="e.g. https://example.com/ambient-music.mp3">
+              <span class="hint">Direct link to an audio stream or file online</span>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Section 2: Photo Management & Uploads -->
+      <section class="card">
+        <div class="card-title-group">
+          <div>
+            <h2>
+              <span>📸</span> Photo Collection
+            </h2>
+            <p class="card-subtitle">Upload photos to display in the slideshow. Drag and drop cards to reorder.</p>
+          </div>
+        </div>
+
+        <!-- Drag & Drop Upload Zone -->
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <h3>Drag and drop photos here</h3>
+          <p>or click anywhere to browse files (JPG, PNG, WEBP, GIF)</p>
+          <button type="button" class="btn-secondary" style="pointer-events: none;">Select Photos</button>
+          <input type="file" id="fileInput" class="file-input" multiple accept="image/*">
+        </div>
+
+        <!-- Upload Progress Indicator -->
+        <div class="upload-progress-container" id="uploadProgress">
+          <div class="upload-progress-text">
+            <span id="uploadStatusText">Uploading photos...</span>
+            <span id="uploadPercentText">0%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="uploadProgressBar"></div>
+          </div>
+        </div>
+
+        <!-- Collection Header -->
+        <div class="photo-grid-header">
+          <span class="photo-count" id="photoCount">Loading collection...</span>
+          <div class="batch-actions" id="batchActions">
+            <button type="button" class="btn-secondary btn-small" id="selectAllBtn">Select All</button>
+            <button type="button" class="btn-secondary btn-small" id="batchLocationBtn" style="display: none;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Set Country</span>
+            </button>
+            <button type="button" class="btn-danger" id="deleteSelectedBtn" style="display: none;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              <span id="deleteSelectedText">Delete Selected (0)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Photos Grid -->
+        <div class="photos-grid" id="photosGrid">
+          <!-- Populated dynamically by admin.js -->
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Photo Focal Point & Preview Modal -->
+  <div class="modal-overlay" id="photoModal">
+    <div class="modal-content focus-modal-content">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 id="modalPhotoName">Set Subject Focal Point</h3>
+          <p class="modal-sub">Click anywhere on the photo to center the slideshow &amp; zoom on that subject</p>
+        </div>
+        <button type="button" class="modal-close" id="modalClose" title="Close (Esc)">&times;</button>
+      </div>
+
+      <div class="modal-body focus-modal-body">
+        <!-- Interactive Target Photo Area -->
+        <div class="focal-canvas-wrap" id="focalCanvasWrap">
+          <img src="" alt="Preview photo" class="modal-image" id="modalImage">
+          <div class="focal-reticle" id="focalReticle" title="Focal point">
+            <span class="reticle-ring"></span>
+            <span class="reticle-cross-h"></span>
+            <span class="reticle-cross-v"></span>
+            <span class="reticle-dot"></span>
+          </div>
+        </div>
+
+        <!-- Live Portrait Mobile Preview Card -->
+        <aside class="live-crop-preview-card">
+          <span class="crop-preview-label">📱 Portrait Preview</span>
+          <div class="phone-frame">
+            <img src="" alt="Cropped preview" class="phone-preview-img" id="phonePreviewImg">
+          </div>
+          <div class="focal-coords-badge" id="focalCoordsBadge">Focus: Center (50%, 50%)</div>
+        </aside>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="resetFocalBtn">Reset to Center</button>
+        <button type="button" class="btn-primary" id="saveFocalBtn">Save Focus Point</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <span id="toastMessage">Settings saved</span>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

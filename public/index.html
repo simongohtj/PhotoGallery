@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Family Photo Gallery</title>
+  <link rel="stylesheet" href="/css/slideshow.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2226%22 font-size=%2224%22>🖼️</text></svg>">
+</head>
+<body>
+  <!-- Main Slideshow Viewport -->
+  <main class="slideshow-viewport" id="viewport" title="Click anywhere to pause or resume">
+    <!-- Slide Layers for Seamless Crossfade & Ken Burns Animations -->
+    <div class="slide-layer active" id="slideA">
+      <img class="slide-image" id="imgA" alt="Slideshow photo" src="">
+    </div>
+    <div class="slide-layer" id="slideB">
+      <img class="slide-image" id="imgB" alt="Slideshow photo" src="">
+    </div>
+
+    <!-- Audio Player for Background Music -->
+    <audio id="bgMusic" loop preload="auto"></audio>
+
+    <!-- Cinematic Center Pause Watermark -->
+    <div class="pause-watermark" id="pauseWatermark" aria-hidden="true">
+      <div class="pause-watermark-icon">⏸</div>
+    </div>
+
+    <!-- Pause Status Indicator -->
+    <div class="pause-badge" id="pauseBadge" aria-live="polite">
+      <span class="pause-dot"></span>
+      <span id="pauseText">Paused</span>
+    </div>
+
+    <!-- Top Bar Quick Actions -->
+    <header class="top-bar" id="topBar">
+      <button class="icon-btn" id="musicBtn" title="Toggle Background Music" aria-label="Toggle Background Music" style="display: none;">
+        <span id="musicIcon" style="font-size: 1.1rem; line-height: 1;">🔇</span>
+      </button>
+      <button class="icon-btn" id="fullscreenBtn" title="Toggle Fullscreen" aria-label="Toggle Fullscreen">
+        <svg viewBox="0 0 24 24">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+      </button>
+      <a href="/admin" class="icon-btn" id="adminBtn" title="Gallery Settings & Uploads" aria-label="Settings">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </a>
+    </header>
+
+    <!-- Discreet Previous & Next Buttons -->
+    <button class="nav-btn prev" id="prevBtn" title="Previous photo (Left Arrow)" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    <button class="nav-btn next" id="nextBtn" title="Next photo (Right Arrow)" aria-label="Next photo">
+      <svg viewBox="0 0 24 24">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+
+    <!-- Stylized Overlay Text (Generic Milestones) -->
+    <section class="stylized-overlay" id="overlayContainer" aria-label="Family Milestones">
+      <div class="overlay-card" id="milestonesCard">
+        <!-- Milestone items rendered dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- Location Mini-Globe Overlay (Bottom-Right) -->
+    <aside class="location-overlay" id="locationOverlay" aria-label="Photo Location" style="display: none;">
+      <div class="location-card">
+        <div class="globe-viewport" id="globeViewport">
+          <!-- Rendered via D3.js -->
+        </div>
+        <div class="location-text">
+          <span class="location-label">📍 Location</span>
+          <span class="location-country" id="locationCountry"></span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Bottom Progress Bar -->
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
+    <!-- Empty State (if all photos deleted) -->
+    <div class="empty-gallery" id="emptyState" style="display: none;">
+      <h2>No photos in collection yet</h2>
+      <p>Your photo gallery is waiting for family memories. Head over to the admin page to upload photos and configure your anniversary dates.</p>
+      <a href="/admin" class="btn-primary">
+        <span>Go to Admin & Upload Photos</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </main>
+
+  <script src="/js/d3.min.js"></script>
+  <script src="/js/topojson-client.min.js"></script>
+  <script src="/js/slideshow.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+services:
+  photogallery:
+    # Replace with your Docker Hub username after publishing
+    image: ${DOCKERHUB_USERNAME:-yourusername}/photogallery:latest
+    container_name: photogallery
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - TZ=UTC
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/public/uploads
+      - ./audio:/app/public/audio
